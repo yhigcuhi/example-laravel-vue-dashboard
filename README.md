@@ -23,6 +23,18 @@ $ npm install -D bootstrap sass lodash @types/lodash @tailwindcss/forms autopref
 $ composer require inertiajs/inertia-laravel tightenco/ziggy
 ```
 
+## 環境構築: Google OAuth
+[laravel/socialite Google OAuth 参考](https://zenn.dev/naoki_oshiumi/articles/80ab178d958447)
+[laravel/socialite + breeze Laravel 10のカスタマイズ 参考](https://reffect.co.jp/laravel/socialiote)
+
+- socialiteインストール
+```bash
+$ composer require laravel/socialite --dev
+```
+- ログイン画面とシーダー作成
+
+service.phpとenvの内容に Google OAuthの設定を記載
+
 ## 資材管理
 - バックエンド: laravel
 - ルーティング定義: inertiaで laravelとvueを結合
