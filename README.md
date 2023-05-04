@@ -16,9 +16,19 @@ $ composer install
 $ curl https://www.toptal.com/developers/gitignore/api/vim,vue,node,linux,macos,laravel,windows,composer,intellij,sublimetext,visualstudio,visualstudiocode >> .gitignore
 ``` 
 
+## 環境構築: vue on Laravel + Inertia + typescript
+```bash
+$ npm install && npm run dev
+$ npm install -D bootstrap sass lodash @types/lodash @tailwindcss/forms autoprefixer postcss tailwindcss @types/ziggy-js @vitejs/plugin-vue typescript vue vue-tsc @inertiajs/vue3
+$ composer require inertiajs/inertia-laravel tightenco/ziggy
+```
+
 ## 資材管理
 - バックエンド: laravel
+- ルーティング定義: inertiaで laravelとvueを結合
+- フロントエンド: vue (index.htmlの代わりだけ blade)
 
+※ vueとしては typescript で実装
 ※ SPA + RESTfull で可能な限り実装
 
 /
@@ -32,6 +42,10 @@ $ curl https://www.toptal.com/developers/gitignore/api/vim,vue,node,linux,macos,
     ┗ /db  (postgresのマウント先)
     ┗ /laravel-src (laravel + vueソース)
         ┗ /resources
+            ┗ /js
+                ┗ /pages (表示する画面ごと TODO:ディレクトリ構成は今後検討)
+                    ┗ XXX.vue (画面vue)
+                ┗ app.ts (エントリーポイント)
             ┗ /view
                 ┗ app.blade.php (エントリーポイント)
             ┗ .env (laravel 用:基本何もしない docker から反映する)

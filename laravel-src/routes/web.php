@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +14,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Laravel デフォルト
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
+// Breezeの Inertia 初期構築パクリ
 Route::get('/', function () {
-    return view('welcome');
+   return Inertia::render('Welcome', [
+       'canLogin' => Route::has('login'),
+       'canRegister' => Route::has('register'),
+       'laravelVersion' => Application::VERSION,
+       'phpVersion' => PHP_VERSION,
+   ]);
 });
