@@ -3,11 +3,12 @@
 ***********************************/
 /* import vue*/
 import { createApp, h, DefineComponent } from 'vue';
-/* 共通設定 */
-import './bootstrap';
-/* 静的資材の読み込みなど */
+/* 共通設定: Laravel Vite */
+import './bootstrap'; // axios
 import '../css/app.css'; // laravel viteのデフォ デザイン
-import 'bootstrap/scss/bootstrap.scss'; // bootstrap利用
+// import 'bootstrap/scss/bootstrap.scss'; // bootstrap利用
+/* 独自プラグイン読み込み */
+import MyDashboardPlugin from './dashboard-plugin';
 /* import inertia*/
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -24,6 +25,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(MyDashboardPlugin) // 独自プラグイン 利用
             .mount(el);
     },
     progress: {

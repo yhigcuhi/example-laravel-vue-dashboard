@@ -45,7 +45,11 @@ Route::middleware('guest')->group(function () {
         Route::get('/auth/callback', [GoogleOAuthController::class, 'callback'])->name('callback');
     });
 });
-
+// ログイン直後 の画面定義
+Route::middleware(['auth', 'verified'])->group(function () {
+    // ダッシュボード
+    Route::get('/home', function () { return Inertia::render('dashboard/Dashboard');})->name('dashboard');
+});
 // ログイン済み の画面定義
 Route::middleware('auth')->group(function () {
     // ログアウト

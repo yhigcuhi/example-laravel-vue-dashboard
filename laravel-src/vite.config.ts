@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
     plugins: [
@@ -30,6 +31,8 @@ export default defineConfig({
                 },
             },
         }),
+        // @assetsようのtsconfigのpathsで設定したエイリアスを取り扱えるようにする
+        tsconfigPaths(),
     ],
     // 謎エラー対策
     resolve: {

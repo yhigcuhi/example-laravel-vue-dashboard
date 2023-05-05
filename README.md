@@ -35,6 +35,18 @@ $ composer require laravel/socialite --dev
 
 service.phpとenvの内容に Google OAuthの設定を記載
 
+## 利用デザイン
+[Argon Dashboard 2 Creative-time 利用(resources/assets 配下の資材)](https://demos.creative-tim.com/vue-argon-dashboard)
+
+- vite-tsconfig-pathsで「@assets」のエイリアスをviteで使えるように (tsconfigも変更)
+- sass と sass-loaderのバージョンを下げる(利用デザインでの 利用bootstrapバージョンのバグに合わせ)
+- 一部 scssの書き換え sassのバージョン対応 (変数 / 数 => calc(変数 / 数)へ) 
+
+コマンド
+```bash
+$ npm i -D vite-tsconfig-paths
+```
+
 ## 資材管理
 - バックエンド: laravel
 - ルーティング定義: inertiaで laravelとvueを結合
