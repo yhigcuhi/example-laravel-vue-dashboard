@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\GoogleOAuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,4 +29,29 @@ Route::get('/', function () {
        'laravelVersion' => Application::VERSION,
        'phpVersion' => PHP_VERSION,
    ]);
+});
+
+// ログイン前 の画面定義
+Route::middleware('guest')->group(function () {
+    // ログイン画面
+    Route::get('/login', function () {return Inertia::render('login/Login');})->name('login');
+
+    // Google OAuth 関連
+    Route::group(['prefix' => '/google', 'as' => 'google.'], function() {
+        // Google OAuthのログイン画面呼び出し
+        Route::get('/auth', [GoogleOAuthController::class, 'index'])->name('index');
+        // Google OAuth成功結果
+        // ※ Google Cloud Platformで URL xxx/google/auth/callback (xxxはhost) 認めている
+        Route::get('/auth/callback', [GoogleOAuthController::class, 'callback'])->name('callback');
+    });
+});
+// ログイン直後 の画面定義
+Route::middleware(['auth', 'verified'])->group(function () {
+    // ダッシュボード
+    Route::get('/home', function () { return Inertia::render('dashboard/Dashboard');})->name('dashboard');
+});
+// ログイン済み の画面定義
+Route::middleware('auth')->group(function () {
+    // ログアウト
+    Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
