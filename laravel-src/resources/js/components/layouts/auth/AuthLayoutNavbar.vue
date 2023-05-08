@@ -4,7 +4,7 @@
         <!-- wrapper -->
         <div class="container ps-2 pe-0">
             <!-- Logo -->
-            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="/">Argon Dashboard 2</a>
+            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="/">Sample Laravel vue Dashboard</a>
         </div>
     </nav>
 <!-- End Navbar -->

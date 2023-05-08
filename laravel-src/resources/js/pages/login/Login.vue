@@ -3,6 +3,8 @@
 import {AuthLayout} from '@/components/layouts'; // 認証用のレイアウト
 import LoginHeader from './LoginHeader.vue'; // ログイン画面ヘッダー
 import {Card, OutlineButton, GoogleSVG} from '@/components/elements';
+/* import 定数 */
+import ROUTES from '@/constants/RouteName'; // ルート名よう
 
 </script>
 <template>
@@ -25,7 +27,7 @@ import {Card, OutlineButton, GoogleSVG} from '@/components/elements';
                         <div class="row px-xl-5 px-sm-4 px-3">
                             <OutlineButton
                                 class="w-100 d-flex justify-content-around align-items-center"
-                                :href="route('google.index')"
+                                :href="route(ROUTES.GOOGLE_AUTH)"
                                 outline="dark"
                             >
                                 <!-- Google ログインのボタン -->

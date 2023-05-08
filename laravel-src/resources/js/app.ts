@@ -6,7 +6,6 @@ import { createApp, h, DefineComponent } from 'vue';
 /* 共通設定: Laravel Vite */
 import './bootstrap'; // axios
 import '../css/app.css'; // laravel viteのデフォ デザイン
-// import 'bootstrap/scss/bootstrap.scss'; // bootstrap利用
 /* 独自プラグイン読み込み */
 import MyDashboardPlugin from './dashboard-plugin';
 /* import inertia*/

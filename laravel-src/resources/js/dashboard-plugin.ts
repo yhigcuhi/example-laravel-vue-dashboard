@@ -2,7 +2,8 @@
 import '@assets/js/nav-pills.js'; // 利用デザイン argonの提供
 // import 'bootstrap/scss/bootstrap.scss'; // bootstrap利用
 import '@assets/scss/argon-dashboard.scss'; // 利用デザイン
-
+import '@assets/css/nucleo-icons.css'; // アイコン
+import '@assets/css/nucleo-svg.css';
 
 // 独自のDashboard pluginとして集約
 export default {
