@@ -45,10 +45,15 @@ Route::middleware('guest')->group(function () {
         Route::get('/auth/callback', [GoogleOAuthController::class, 'callback'])->name('callback');
     });
 });
-// ログイン直後 の画面定義
+// ログインかつメアド確認後 の画面定義
 Route::middleware(['auth', 'verified'])->group(function () {
     // ダッシュボード
     Route::get('/home', function () { return Inertia::render('dashboard/Dashboard');})->name('dashboard');
+    // 選手一覧
+    Route::group(['prefix' => '/players', 'as' => 'player.'], function() {
+        // 一覧 画面
+        Route::get('/', function () { return Inertia::render('player/Players');})->name('search');
+    });
 });
 // ログイン済み の画面定義
 Route::middleware('auth')->group(function () {

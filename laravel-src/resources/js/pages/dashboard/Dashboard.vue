@@ -7,7 +7,7 @@ import MENUS from '@/constants/RouteMenu';
 
 </script>
 <template>
-    <DashboardLayout>
+    <DashboardLayout title="Home">
         <!-- ダッシュボード: Home -->
         <div class="row my-4">
             <div class="col-12">

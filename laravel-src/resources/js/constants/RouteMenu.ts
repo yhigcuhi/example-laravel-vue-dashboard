@@ -17,6 +17,13 @@ const menus: RouteMenu[] = [
         iconClass: 'ni ni-tv-2 text-primary',
         text: 'Home'
     },
+    // 選手一覧
+    {
+        routeName: ROUTES.PLAYERS,
+        prefixURL: '/player',
+        iconClass: 'ni ni-calendar-grid-58 text-warning',
+        text: 'Mリーガー'
+    }
 ];
 
 // export

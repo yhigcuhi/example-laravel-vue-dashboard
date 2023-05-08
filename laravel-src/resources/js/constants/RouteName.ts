@@ -8,6 +8,8 @@ enum RouteName {
     DASHBOARD = 'dashboard',
     // ログアウト
     LOGOUT = 'logout',
+    // 選手一覧 
+    PLAYERS = 'player.search',
 }
 
 /* export */

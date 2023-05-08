@@ -24,7 +24,6 @@ class GoogleOAuthController extends Controller
         $this->service = $service;
     }
 
-
     /**
      * Socialiteによる Google OAuthの認証画面 表示
      * @return \Illuminate\Http\RedirectResponse|Response|\Symfony\Component\HttpFoundation\RedirectResponse
