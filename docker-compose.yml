@@ -73,3 +73,20 @@ services:
     volumes:
       - ./db/postgres:/var/lib/postgresql/data
       - ./db/logs:/var/log
+  # 参考 https://qiita.com/minato-naka/items/3b0bcf0788a2150f3171
+  # ReDoc (Swagger 閲覧用)用のコンテナ
+  redoc:
+    # 管理コンテナ名
+    container_name: ${APP_NAME}-redoc
+    # nginx confいじる(キャッシュ無効化)ために (カスタマイズした点)
+    build: ./docker/redoc
+    # 利用ポート
+    ports:
+      - ${REDOC_PORT:-8001}:80
+    # マウント = ビルド先
+    volumes:
+      - ./documents/swagger/openapi.yaml:/usr/share/nginx/html/openapi.yaml
+    # 環境変数
+    environment:
+      # 閲覧する yamlの選択っぽい
+      SPEC_URL: openapi.yaml

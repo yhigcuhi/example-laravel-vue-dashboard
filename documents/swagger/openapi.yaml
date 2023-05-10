@@ -1,0 +1,141 @@
+openapi: 3.0.0
+# API情報
+info:
+  version: 1.0.0
+  # API名
+  title: サンプル ダッシュボード API
+  # 概要
+  description: |
+    # この APIについて
+    サンプル ダッシュボード画面用の API
+    題材として Mリーグの情報を操作する
+# APIサーバー情報
+servers:
+  # laravel for local
+  - url: http://localhost:8080
+# 分類
+tags:
+  - name: season
+    description: シーズンのマスタ 関連
+  - name: players
+    description: 選手 関連
+paths:
+  # シーズン一覧
+  /seasons:
+    # 取得
+    get:
+      # 分類
+      tags:
+        - season
+      # APIキー名
+      operationId: findAllSeasons
+      # 概要
+      summary: Mリーグのシーズン定義 一覧
+      # レスポンスボディ
+      responses:
+        # 成功
+        '200':
+          description: Mリーグのシーズン 一覧 取得成功
+          content:
+            # JSON返却
+            application/json:
+              schema:
+                # 形 = 一覧
+                type: array
+                items:
+                  # 一覧の形
+                  $ref: '#/components/schemas/Season'
+        # その他エラー
+        default:
+          description: その他エラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    # ValueObject の定義
+    # ID型
+    ID:
+      type: integer
+      format: int64
+      example: 1
+      # 参照のみ
+      readOnly: true
+    # 日時
+    Datetime:
+      type: string
+      format: date-time
+      example: "2023-05-10 18:11:00"
+    # 日
+    Day:
+      type: string
+      format: date
+      example: "2023-05-10"
+    # シーズンコード
+    SeasonCode:
+      type: string
+      description: シーズンコード
+      example: "2022-23"
+    # 名前
+    Name:
+      type: string
+      description: 名前
+      maxLength: 32
+    # Entity型 定義
+    Entity:
+      type: object
+      # 中身
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        # 登録日時
+        createdAt:
+          $ref: '#/components/schemas/Datetime'
+        # 更新日時
+        updatedAt:
+          $ref: '#/components/schemas/Datetime'
+    # シーズン
+    Season:
+      type: object
+      required:
+        - season_code
+        - name
+        - start_day
+        - end_day
+      # 継承
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+      # 独自のフィールド
+      properties:
+        season_code:
+          $ref: '#/components/schemas/SeasonCode'
+        name:
+          description: 画面表示名
+          example: "2022-23 シーズン"
+          allOf:
+            - $ref: '#/components/schemas/Name'
+        start_day:
+          description: シーズン開始日
+          allOf:
+            - $ref: '#/components/schemas/Day'
+        end_day:
+          description: シーズン終了日
+          allOf:
+            - $ref: '#/components/schemas/Day'
+    # その他共通系
+    # エラー
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+# その他 備考
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
