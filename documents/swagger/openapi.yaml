@@ -101,8 +101,8 @@ components:
       required:
         - season_code
         - name
-        - start_day
-        - end_day
+        - regular_start_day
+        - regular_end_day
       # 継承
       allOf:
         - $ref: '#/components/schemas/Entity'
@@ -115,12 +115,34 @@ components:
           example: "2022-23 シーズン"
           allOf:
             - $ref: '#/components/schemas/Name'
-        start_day:
-          description: シーズン開始日
+        regular_start_day:
+          description: レギュラーシーズン 期間 開始日
+          example: "2022-10-03"
           allOf:
             - $ref: '#/components/schemas/Day'
-        end_day:
-          description: シーズン終了日
+        regular_end_day:
+          description: レギュラーシーズン 期間 終了日
+          example: "2023-03-21"
+          allOf:
+            - $ref: '#/components/schemas/Day'
+        semifinal_start_day:
+          description: セミファイナル 期間 開始日
+          example: "2023-04-10"
+          allOf:
+            - $ref: '#/components/schemas/Day'
+        semifinal_end_day:
+          description: セミファイナル期間 終了日
+          example: "2023-05-04"
+          allOf:
+            - $ref: '#/components/schemas/Day'
+        final_start_day:
+          description: ファイナル 期間 開始日
+          example: "2023-05-08"
+          allOf:
+            - $ref: '#/components/schemas/Day'
+        final_end_day:
+          description: ファイナル期間 終了日
+          example: "2023-05-19"
           allOf:
             - $ref: '#/components/schemas/Day'
     # その他共通系
