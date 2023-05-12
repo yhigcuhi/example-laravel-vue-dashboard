@@ -91,16 +91,20 @@ components:
           $ref: '#/components/schemas/ID'
         # 登録日時
         createdAt:
+          # 参照のみ
+          readOnly: true
           $ref: '#/components/schemas/Datetime'
         # 更新日時
         updatedAt:
+          # 参照のみ
+          readOnly: true
           $ref: '#/components/schemas/Datetime'
     # シーズン
     Season:
       type: object
       required:
         - season_code
-        - name
+        - title
         - regular_start_day
         - regular_end_day
       # 継承
@@ -110,7 +114,7 @@ components:
       properties:
         season_code:
           $ref: '#/components/schemas/SeasonCode'
-        name:
+        title:
           description: 画面表示名
           example: "2022-23 シーズン"
           allOf:

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* import 部品 */
-import { LogoutLink } from '@/components/elements';
+import { LogoutLink, MLeagueSeasonSelect } from '@/components/elements';
 </script>
 <template>
     <!-- Header Navbar -->
@@ -13,13 +13,7 @@ import { LogoutLink } from '@/components/elements';
                 </h6>
                 <!-- 表示画面名 -->
                 <div class="mx-4">
-                    <!-- セレクトボックス -->
-                    <select class="form-control border-input">
-                        <!-- 各 オプション -->
-                        <option>
-                            TODO:シーズンセレクトボックス
-                        </option>
-                    </select>
+                    <MLeagueSeasonSelect/>
                 </div>
             </div>
             <!-- 右メニュー -->
