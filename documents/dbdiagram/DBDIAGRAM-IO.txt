@@ -1,0 +1,134 @@
+/* https://dbdiagram.io よう テーブルの設計 */
+/* m_league.public schema */
+// チーム
+Table teams as T {
+  id int [pk, increment] //チームID
+  team_code varchar [not null,unique] //チームコード
+  name varchar [not null] //チーム名
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+// 選手
+Table players as P {
+  id int [pk, increment] //チームID
+  player_code varchar [not null,unique] //選手コード
+  name varchar [not null] //名前(レコードの違いを 分かりやすくするよう)
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+// 選手プロフィール
+Table player_profiles {
+  id int [pk, increment] //選手プロフィール
+  player_code varchar [not null,unique, ref: - P.player_code] //選手コード
+  last_name varchar [not null] //姓
+  first_name varchar [not null] //名
+  last_name_kana varchar [not null] //せい
+  first_name_kana varchar [not null] //めい
+  birthday timestamp  //誕生日
+  organization varchar  //所属団体
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+/* m_league.season schema */
+// シーズン
+Table season.seasons as S {
+  id int [pk, increment] //シーズンID
+  season_code varchar [not null,unique] // (FK) シーズンコード("2022-23"など)
+  title varchar [not null] //画面表示名
+  regular_start_day timestamp [not null] // レギュラーシーズン期間 開始日
+  regular_end_day timestamp [not null] // レギュラーシーズン期間 終了日
+  semifinal_start_day timestamp // セミファイナル 期間 開始日
+  semifinal_end_day timestamp // セミファイナル 期間 終了日
+  final_start_day timestamp // ファイナル 期間 開始日
+  final_end_day timestamp // ファイナル 期間 終了日
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+// シーズン(ごとの) チーム
+Table season.season_teams as ST {
+  id int [pk, increment] //シーズン チームID
+  season_code varchar [not null, ref: > S.season_code, unique] //（対象の）シーズン
+  team_code varchar [not null, ref: > T.team_code, unique] //（対象の）チーム
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+// シーズン（ごとの）チーム（の）所属選手 
+Table season.season_team_players as SP {
+  id int [pk, increment] //シーズン(別)チーム所属選手ID
+  season_team_id int [not null,unique, ref: > ST.id] //シーズン(別)チームID(FK)
+  player_code varchar [not null,unique, ref: > P.player_code] //（所属）選手コード
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+// シーズン 試合
+Table season.season_games as SG {
+  id int [pk, increment] //シーズン 試合ID
+  game_code varchar [not null, unique] // 試合コード(m2022100301a:(2022-23シーズン)Mリーグ 2022/10/03 1試合目 Aコートの意味)
+  season_code varchar [not null, ref: > S.season_code] //シーズンコード
+  game_day timestamp [not null] //試合日
+  game_number int [not null] //試合数(何試合目)
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+// シーズン 試合出場選手
+Table season.season_game_players as SGP {
+  id int [pk, increment] //シーズン 試合出場選手ID
+  season_game_id int [not null, ref: > SG.id] //シーズン 試合
+  player_code varchar [not null, ref: > P.player_code] //(出場)選手コード
+  direction direction [not null] //席順(東家など)の風
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+// シーズン 試合出場選手 成績
+Table season.season_game_player_total_stats {
+  id int [pk, increment] //シーズン 試合成績ID
+  season_game_player_id int [not null,unique, ref: - SGP.id] //シーズン 試合出場選手ID
+  point numeric [not null] //最終ポイント(実行時の計算式で自動算出できるが実行時の得点を保持しておく)(ドメイン = 着順ボーナス + (整数部4桁,少数部1桁)(1000点1ポイント)(±あり))
+  total_score int [not null] //総点数(±あり)
+  total_win_count int [not null] // (1試合の)総和了数(TODO:詳細できたら不要)
+  total_reach_count int [not null] // (1試合の)総立直数(TODO:詳細できたら不要)
+  total_deal_count int [not null] // (1試合の)総放銃数(TODO:詳細できたら不要)
+  total_meld_count int [not null] // (1試合の)総副露数(TODO:詳細できたら不要)
+  average_win_score int [not null] // (1試合の)平均打点(TODO:詳細できたら不要, sum(加算点数がプラス)/count(加算点数がプラス) = 平均)
+  average_deal_score int [not null] // (1試合の)平均放銃点(TODO:詳細できたら不要, sum(放銃した加算点数がマイナス)/count(放銃した加算点数がマイナス) = 平均)
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+
+// ↓　機能拡張
+// シーズン 試合 詳細(東3局2本場などの単位)
+Table season.season_game_details as SGD {
+  id int [pk, increment] //シーズン 試合 詳細ID
+  season_game_id int [not null, ref: > SG.id] //シーズン 試合
+  direction direction [not null] // 場風
+  direction_round_number int [not null] //（場風の）局数
+  direction_round_bonus_number int [not null] //（場風の）本場数
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+// シーズン 試合 詳細 選手成績(東3局2本場 の選手の成績:流局やロンに関わりない人も 0点 データでもつ)
+Table season.season_game_detail_player_stats {
+  id int [pk, increment] //シーズン 試合ID
+  season_game_detail_id int [not null,unique, ref: > SGD.id] //シーズン 試合出場選手ID
+  season_game_player_id int [not null,unique, ref: > SGP.id] //シーズン 試合出場選手ID
+  append_score int [not null, default: 0] // 加算点数(振り込んだらマイナスあり) 成績
+  win_season_game_player_id int [ref: > SGP.id,note: 'アガリ選手ID(振込先用)'] // 勝利者(ノーテン流局は 全員NULL、勝った人は NULL、負けた人は 振込先の選手ID)
+  stats_note varchar [note: 'ダブ東, 赤ドラ×2など アガリ役名'] // 成績概要(役など記載 関係ない場合は null)
+  is_reach boolean [not null,default: false] // 立直した？
+  is_deal boolean [not null,default: false] // 放銃した？
+  meld_count boolean [not null,default: false] // 放銃した？
+  created_at timestamp [not null,default: `now()`]
+  updated_at timestamp [not null,default: `now()`]
+}
+// ↑　機能拡張
+
+/* m_league_admin schema enum */
+Enum direction {
+  name [note: '東南西北']
+}

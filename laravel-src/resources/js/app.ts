@@ -12,6 +12,8 @@ import MyDashboardPlugin from './dashboard-plugin';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+/* import store*/
+import store from './store';
 
 
 // アプリ名
@@ -24,6 +26,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(store) // グローバルストア 利用
             .use(MyDashboardPlugin) // 独自プラグイン 利用
             .mount(el);
     },
