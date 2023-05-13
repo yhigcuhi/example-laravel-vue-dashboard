@@ -17,6 +17,7 @@ class InitializeSeeder extends Seeder
         // プロジェクト マストの初期化 マスタだけを呼び出す (全ての環境)
         $this->call([
             UserSeeder::class, // (管理画面) ユーザー
+            SeasonSeeder::class, // Mリーグ シーズン 定義
         ]);
     }
 }

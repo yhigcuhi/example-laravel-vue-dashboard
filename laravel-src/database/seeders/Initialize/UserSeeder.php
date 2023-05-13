@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Initialize;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 /**
@@ -14,8 +15,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // TODO:環境ごと と 2回目用
+        // TRUNCATE
+        User::truncate();
         // 管理画面ユーザー 生成
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Admin User',
             'email' => config('admin.admin_gmail'),
         ]);

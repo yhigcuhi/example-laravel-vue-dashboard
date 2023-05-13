@@ -3,4 +3,5 @@ export * from './buttons';
 export * from './cards';
 export * from './icon';
 export * from './images';
+export * from './selects';
 export * from './links';
