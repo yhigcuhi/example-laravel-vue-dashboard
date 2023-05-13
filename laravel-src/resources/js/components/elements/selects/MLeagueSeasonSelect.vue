@@ -34,9 +34,9 @@ const emit = defineEmits(['update:modelValue']);
 // Mリーグ シーズン選択肢
 const options = computed(() => map(store.seasons, ({title, season_code}) => ({text: title, value: season_code})));
 // 選択 値
-const selected = computed({
+const selected = computed<SeasonCode|null>({
     // getter
-    get() { return props.modelValue ?? store.activeSeason?.season_code; },
+    get() { return props.modelValue ? props.modelValue : (store.activeSeason?.season_code ?? null); },
     // setter
     set(val: SeasonCode|null) {
         // 現在のアクティブの シーズン切り替え
