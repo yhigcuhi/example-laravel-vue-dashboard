@@ -34,7 +34,7 @@ Table player_profiles {
 
 /* m_league.season schema */
 // シーズン
-Table season.seasons as S {
+Table m_league_season.seasons as S {
   id int [pk, increment] //シーズンID
   season_code varchar [not null,unique] // (FK) シーズンコード("2022-23"など)
   title varchar [not null] //画面表示名
@@ -49,7 +49,7 @@ Table season.seasons as S {
 }
 
 // シーズン(ごとの) チーム
-Table season.season_teams as ST {
+Table m_league_season.season_teams as ST {
   id int [pk, increment] //シーズン チームID
   season_code varchar [not null, ref: > S.season_code, unique] //（対象の）シーズン
   team_code varchar [not null, ref: > T.team_code, unique] //（対象の）チーム
@@ -58,7 +58,7 @@ Table season.season_teams as ST {
 }
 
 // シーズン（ごとの）チーム（の）所属選手 
-Table season.season_team_players as SP {
+Table m_league_season.season_team_players as SP {
   id int [pk, increment] //シーズン(別)チーム所属選手ID
   season_team_id int [not null,unique, ref: > ST.id] //シーズン(別)チームID(FK)
   player_code varchar [not null,unique, ref: > P.player_code] //（所属）選手コード
@@ -67,7 +67,7 @@ Table season.season_team_players as SP {
 }
 
 // シーズン 試合
-Table season.season_games as SG {
+Table m_league_season.season_games as SG {
   id int [pk, increment] //シーズン 試合ID
   game_code varchar [not null, unique] // 試合コード(m2022100301a:(2022-23シーズン)Mリーグ 2022/10/03 1試合目 Aコートの意味)
   season_code varchar [not null, ref: > S.season_code] //シーズンコード
@@ -77,7 +77,7 @@ Table season.season_games as SG {
   updated_at timestamp [not null,default: `now()`]
 }
 // シーズン 試合出場選手
-Table season.season_game_players as SGP {
+Table m_league_season.season_game_players as SGP {
   id int [pk, increment] //シーズン 試合出場選手ID
   season_game_id int [not null, ref: > SG.id] //シーズン 試合
   player_code varchar [not null, ref: > P.player_code] //(出場)選手コード
@@ -86,7 +86,7 @@ Table season.season_game_players as SGP {
   updated_at timestamp [not null,default: `now()`]
 }
 // シーズン 試合出場選手 成績
-Table season.season_game_player_total_stats {
+Table m_league_season.season_game_player_total_stats {
   id int [pk, increment] //シーズン 試合成績ID
   season_game_player_id int [not null,unique, ref: - SGP.id] //シーズン 試合出場選手ID
   point numeric [not null] //最終ポイント(実行時の計算式で自動算出できるが実行時の得点を保持しておく)(ドメイン = 着順ボーナス + (整数部4桁,少数部1桁)(1000点1ポイント)(±あり))
@@ -103,7 +103,7 @@ Table season.season_game_player_total_stats {
 
 // ↓　機能拡張
 // シーズン 試合 詳細(東3局2本場などの単位)
-Table season.season_game_details as SGD {
+Table m_league_season.season_game_details as SGD {
   id int [pk, increment] //シーズン 試合 詳細ID
   season_game_id int [not null, ref: > SG.id] //シーズン 試合
   direction direction [not null] // 場風
@@ -113,7 +113,7 @@ Table season.season_game_details as SGD {
   updated_at timestamp [not null,default: `now()`]
 }
 // シーズン 試合 詳細 選手成績(東3局2本場 の選手の成績:流局やロンに関わりない人も 0点 データでもつ)
-Table season.season_game_detail_player_stats {
+Table m_league_season.season_game_detail_player_stats {
   id int [pk, increment] //シーズン 試合ID
   season_game_detail_id int [not null,unique, ref: > SGD.id] //シーズン 試合出場選手ID
   season_game_player_id int [not null,unique, ref: > SGP.id] //シーズン 試合出場選手ID

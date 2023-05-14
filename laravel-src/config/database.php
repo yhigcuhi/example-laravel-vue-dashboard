@@ -93,6 +93,41 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        /* 独自設定 */
+        // 共通スキーマ 接続DBC
+        'common-pgsql' => [
+            // 諸事情でpostgresqlとさせていただきます(利用する設定に変更してください)
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            // 共通スキーマをデフォルトスキーマとして扱う
+            'search_path' => env('COMMON_SCHEMA', 'public'),
+            'sslmode' => 'prefer',
+        ],
+        // ドメインスキーマ 接続DBC
+        'domain-pgsql' => [
+            // 諸事情でpostgresqlとさせていただきます(利用する設定に変更してください)
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            // 共通スキーマをデフォルトスキーマとして扱う
+            'search_path' => env('DOMAIN_SCHEMA', 'public'),
+            'sslmode' => 'prefer',
+        ],
     ],
 
     /*

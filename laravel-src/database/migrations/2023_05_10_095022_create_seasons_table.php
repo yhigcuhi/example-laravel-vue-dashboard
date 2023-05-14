@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // 接続DB　Connectionの定義(database.php参照)
+    protected $connection = 'domain-pgsql';
     /**
      * Run the migrations.
      */

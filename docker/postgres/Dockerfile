@@ -1,3 +1,10 @@
 # postgres
 FROM postgres:13
-# TODO;必要となるものが増えたら考える
+
+# タイムゾーン設定
+ENV POSTGRES_INITDB_ARGS="--encoding=UTF-8 --locale=C"
+# タイムゾーン設定
+ENV TZ="Asia/Tokyo"
+ENV PGTZ="Asia/Tokyo"
+# 複数スキーマでの運用
+COPY create-multiple-postgresql-databases.sh /docker-entrypoint-initdb.d/

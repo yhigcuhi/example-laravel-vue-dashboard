@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class Season extends Model
 {
     use HasFactory;
+    // 接続DB　Connectionの定義(database.php参照)
+    protected $connection = 'domain-pgsql';
     // 登録更新できないフィールド
     protected $guarded = ['id'];
     // 登録更新する際に設定できる項目(カラム)
