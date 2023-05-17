@@ -6,7 +6,7 @@ use App\Models\Season;
 use Illuminate\Database\Seeder;
 
 /**
- * (管理画面)ユーザー シーダー
+ * Mリーグシーズン シーダー
  */
 class SeasonSeeder extends Seeder
 {

@@ -13,6 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // テーブルが存在していれば 何もしない
+        if (Schema::hasTable('seasons')) return;
+        // Mリーグ シーズン テーブル 作成
         Schema::create('seasons', function (Blueprint $table) {
             // PK
             $table->id()->comment('Mリーグ シーズンID');

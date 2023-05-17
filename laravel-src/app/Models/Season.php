@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Mリーグ シーゾン定義マスタ
+ * Mリーグ シーズン定義マスタ
  */
 class Season extends Model
 {

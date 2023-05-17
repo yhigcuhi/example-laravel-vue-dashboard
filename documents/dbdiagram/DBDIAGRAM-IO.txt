@@ -11,7 +11,7 @@ Table teams as T {
 
 // 選手
 Table players as P {
-  id int [pk, increment] //チームID
+  id int [pk, increment] //選手ID
   player_code varchar [not null,unique] //選手コード
   name varchar [not null] //名前(レコードの違いを 分かりやすくするよう)
   created_at timestamp [not null,default: `now()`]
@@ -26,10 +26,21 @@ Table player_profiles {
   first_name varchar [not null] //名
   last_name_kana varchar [not null] //せい
   first_name_kana varchar [not null] //めい
-  birthday timestamp  //誕生日
-  organization varchar  //所属団体
+  birthday timestamp  //誕生日(yyyy/MM/dd) ※ 年が不明な選手いるので
+  date_of_birth varchar[not null]  //誕生日 月日だけ文字(MM/dd) ※ 年が不明な選手いるので
+  organization organization  //所属団体
   created_at timestamp [not null,default: `now()`]
   updated_at timestamp [not null,default: `now()`]
+}
+
+/* m_league.public schema */
+// 所属 プロ麻雀の団体名 (Mリーガーのいる分だけ ChatGPTで物理名決めた) 
+Enum organization {
+  JPML [note: '日本プロ麻雀連盟']
+  NPM [note: '日本プロ麻雀協会']
+  SAIKOUISEN [note: '最高位戦日本プロ麻雀協会']
+  MJU [note: '麻将連合-μ-']
+  RMU [note: 'RMU']
 }
 
 /* m_league.season schema */
@@ -128,7 +139,11 @@ Table m_league_season.season_game_detail_player_stats {
 }
 // ↑　機能拡張
 
-/* m_league_admin schema enum */
+/* m_league_admin schema enum *
+// 東南西北
 Enum direction {
-  name [note: '東南西北']
+  east
+  south
+  west
+  north
 }
