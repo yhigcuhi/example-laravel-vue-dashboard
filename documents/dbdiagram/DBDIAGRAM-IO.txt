@@ -26,6 +26,7 @@ Table player_profiles {
   first_name varchar [not null] //名
   last_name_kana varchar [not null] //せい
   first_name_kana varchar [not null] //めい
+  gender gender [not null] // 性別
   birthday timestamp  //誕生日(yyyy/MM/dd) ※ 年が不明な選手いるので
   date_of_birth varchar[not null]  //誕生日 月日だけ文字(MM/dd) ※ 年が不明な選手いるので
   organization organization  //所属団体
@@ -34,12 +35,17 @@ Table player_profiles {
 }
 
 /* m_league.public schema */
+// 性別
+Enum gender {
+  MEN,
+  WOMEN,
+}
 // 所属 プロ麻雀の団体名 (Mリーガーのいる分だけ ChatGPTで物理名決めた) 
 Enum organization {
-  JPML [note: '日本プロ麻雀連盟']
-  NPM [note: '日本プロ麻雀協会']
-  SAIKOUISEN [note: '最高位戦日本プロ麻雀協会']
-  MJU [note: '麻将連合-μ-']
+  JPML [note: '日本プロ麻雀連盟'],
+  NPM [note: '日本プロ麻雀協会'],
+  SAIKOUISEN [note: '最高位戦日本プロ麻雀協会'],
+  MJU [note: '麻将連合-μ-'],
   RMU [note: 'RMU']
 }
 
@@ -49,12 +55,6 @@ Table m_league_season.seasons as S {
   id int [pk, increment] //シーズンID
   season_code varchar [not null,unique] // (FK) シーズンコード("2022-23"など)
   title varchar [not null] //画面表示名
-  regular_start_day timestamp [not null] // レギュラーシーズン期間 開始日
-  regular_end_day timestamp [not null] // レギュラーシーズン期間 終了日
-  semifinal_start_day timestamp // セミファイナル 期間 開始日
-  semifinal_end_day timestamp // セミファイナル 期間 終了日
-  final_start_day timestamp // ファイナル 期間 開始日
-  final_end_day timestamp // ファイナル 期間 終了日
   created_at timestamp [not null,default: `now()`]
   updated_at timestamp [not null,default: `now()`]
 }
@@ -77,11 +77,30 @@ Table m_league_season.season_team_players as SP {
   updated_at timestamp [not null,default: `now()`]
 }
 
+// シリーズ
+Table m_league_season.series as SR {
+  id int [pk, increment] // シリーズ
+  series_code varchar [not null, unique] // シリーズコード(2022-23-REGULAR:(2022-23シーズン)Mリーグ レギュラーシーズン の意味)
+  season_code varchar [not null, ref: > S.season_code] // (対象の)シーズンコード
+  series_category series_category [not null] // シリーズ カテゴリー (REGULAR:レギュラーシーズンなど)
+  title varchar [not null] // シリーズ 表示名 (レギュラーシーズンなど)
+  start_day timestamp // シリーズ 期間 開始日 (決まっていない:null)
+  end_day timestamp // シリーズ 期間 終了日
+  // ↑　横持ちを縦持ちへ
+  // regular_start_day timestamp [not null] // レギュラーシーズン期間 開始日
+  // regular_end_day timestamp [not null] // レギュラーシーズン期間 終了日
+  // semifinal_start_day timestamp // セミファイナル 期間 開始日
+  // semifinal_end_day timestamp // セミファイナル 期間 終了日
+  // final_start_day timestamp // ファイナル 期間 開始日
+  // final_end_day timestamp // ファイナル 期間 終了日
+}
+
+// TODO: シリーズに依存へ
 // シーズン 試合
 Table m_league_season.season_games as SG {
   id int [pk, increment] //シーズン 試合ID
   game_code varchar [not null, unique] // 試合コード(m2022100301a:(2022-23シーズン)Mリーグ 2022/10/03 1試合目 Aコートの意味)
-  season_code varchar [not null, ref: > S.season_code] //シーズンコード
+  // season_code varchar [not null, ref: > S.season_code] //シーズンコード TODO: ではなく シリーズに依存へ 項目名「対象シリーズ」
   game_day timestamp [not null] //試合日
   game_number int [not null] //試合数(何試合目)
   created_at timestamp [not null,default: `now()`]
@@ -139,7 +158,13 @@ Table m_league_season.season_game_detail_player_stats {
 }
 // ↑　機能拡張
 
-/* m_league_admin schema enum *
+/* m_league_admin schema enum */
+// シリーズ カテゴリー
+Enum series_category {
+  REGULAR [note: 'レギュラーシーズン'],
+  SEMI_FINAL [note: 'セミファイナルシリーズ'],
+  FINAL [note: 'ファイナルシリーズ']
+}
 // 東南西北
 Enum direction {
   east

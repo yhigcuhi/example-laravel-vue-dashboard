@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Gender;
+use App\Enums\Organization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +13,16 @@ use Illuminate\Database\Eloquent\Model;
 class PlayerProfile extends Model
 {
     use HasFactory;
+    /* 定数 */
+    // 所属 団体
+    const ORGANIZATIONS = [
+        'JPML', //日本プロ麻雀連盟
+        'NPM', //日本プロ麻雀協会
+        'SAIKOUISEN', //最高位戦日本プロ麻雀協会
+        'MJU', //麻将連合-μ-
+        'RMU', //RMU
+    ];
+
     // 登録更新できないフィールド
     protected $guarded = ['id'];
     // 登録更新する際に設定できる項目(カラム)
@@ -20,6 +32,7 @@ class PlayerProfile extends Model
         'first_name', // 名
         'last_name_kana', // せい
         'first_name_kana', // 名
+        'gender', // 性別
         'birthday', // 誕生日
         'date_of_birth', // 誕生日 月日だけ文字(MM/dd) ※ 年が不明な選手いるので こちらを必須
         'organization', // 所属団体
@@ -36,8 +49,9 @@ class PlayerProfile extends Model
     ];
     // キャスト
     protected $casts = [
+        'gender' => Gender::class,
         'birthday' => 'immutable_datetime:Y-m-d',
         // TODO: 誕生日 月日だけ???
-        // TODO: 所属団体 enum
+        'organization' => Organization::class,
     ];
 }

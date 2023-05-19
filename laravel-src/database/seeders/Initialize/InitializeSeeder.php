@@ -18,6 +18,7 @@ class InitializeSeeder extends Seeder
         $this->call([
             UserSeeder::class, // (管理画面) ユーザー
             SeasonSeeder::class, // Mリーグ シーズン 定義
+            PlayerSeeder::class, // 選手定義
         ]);
     }
 }
